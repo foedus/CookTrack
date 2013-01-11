@@ -48,6 +48,7 @@ MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
 
 // ------App configuration-------
 	var app = express();
+	var http = express();
 	
 	var options = {
 	  key: fs.readFileSync('key.pem'),
@@ -101,6 +102,7 @@ MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
 		));
 
 // -----Routing starts here-----
+	http.get('*', routes.http);
 	app.get('/', routes.index);
 	app.post('/login', routes.login);
 	app.get('/logout', routes.logout);
@@ -112,10 +114,10 @@ MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
 	app.get('/myrecipes', ensureAuthenticated, recipeHandler.myRecipes);
 
 // -----Run server-----
-	http.createServer(app).listen(3000, function() {
-		console.log('CookTrack listening on Port 3000.')
+	http.listen(8080, function() {
+		console.log('CookTrackHTTP listening on Port 8080.')
 	});
-	https.createServer(options, app).listen(3001, function() {
-		console.log('CookTrackHTTPS listening on Port 3001.')
+	https.createServer(options, app).listen(8443, function() {
+		console.log('CookTrackHTTPS listening on Port 8443.')
 	});
 });

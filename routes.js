@@ -1,8 +1,12 @@
 var MongoClient = require('mongodb').MongoClient;
 var bcrypt = require('bcrypt');
 
+exports.http = function (req, res) {
+	console.log('Redirecting to a secure connection.');
+	res.redirect('https://localhost:8443'+req.url);
+}
+
 exports.login = function(req, res, next) {
-	console.log(req.body);
 	MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
 		var users = db.collection('users');
 		users.findOne({'username':req.body.username}, function (err,user) {
@@ -16,7 +20,6 @@ exports.login = function(req, res, next) {
 				if (test) {
 					req.logIn(user, function (err) {
 						if (err) { return next(err); }
-						console.log(res.body);
 						return res.redirect('/myrecipes');
 					});
 				} else {
