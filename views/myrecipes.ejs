@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<title> <%= title %> </title>
+</head>
+<body>
+	<div id="logout">
+		<a href="/logout">Logout</a>
+	</div>
+	<div id="enterrecipe">
+		<a href="/new">New Recipe</a>
+	</div>
+	<p>
+	<div id="showrecipes">
+		<% if (lgth>0) {%>
+			<% myrecipes.forEach(function(item) { %>
+				<div id="recipe">
+					Date: <%= item.date %>
+					<p>
+					Name: <%= item.dishname %>
+					<p>								
+					Recipe: <%= item.recipe %>
+					<p>
+					Notes: <%= item.notes %>
+					<p>
+					<a href="/edit">Edit</a>
+					<a href="/delete">Delete</a>
+				</div>
+				<p>
+			<% }) %>
+		<% } %>
+		<% if (lgth == 0) { %>
+			<p>
+			No recipes yet!
+			<p>
+		<% } %>
+	</div>
+</body>
+</html>

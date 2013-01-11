@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+	<h1>Welcome to CookTrack.</h1> 
+	<p>
+	Please log in or create an account.
+	<div id="newuser">
+		New users
+		<form method="POST" action="/newaccount">
+			Username: <input type="username" name="username"><br>
+			Password: <input type="password" name="password"><br>
+			Email: <input type="text" name="email"><br>
+			<input type="submit" value="Sign Up">
+		</form>
+	</div>
+	<p>
+	<div id="olduser">
+		Returning users
+		<form method="POST" action="/login">
+			Username: <input type="username" name="username"><br>
+			Password: <input type="password" name="password"><br>
+			<input type="submit" value="Sign In">
+		</form>
+	</div>
+</body>
+</html>

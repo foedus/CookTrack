@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+	<div id="logout">
+		<a href="/logout">Logout</a>
+	</div>
+	<div id="backtohome">
+		<a href="/myrecipes">My Recipes</a>
+	</div>
+	
+	<form name="newrecipe" action="/submit" method="POST">	
+		<div id="dishname">
+			DISH: <input type="text" name="dishname">	
+		</div>
+
+		<div id="date">
+			DATE: <input type="date" name="date">
+		</div>
+		
+		<div id="recipeholder">
+			RECIPE:
+			<div id="recipetext">
+				<textarea name="recipetext"></textarea>
+			</div>
+		</div>
+
+		<div id="notesholder">
+			NOTES: 
+			<div id="notes">
+				<textarea name="notes"></textarea>
+			</div>
+		</div>
+
+		<div id="photoholder">
+			PHOTO:
+			<input id="fileupload" type="file" method="POST">
+			<input id="filesubmit" type="submit" value="SUBMIT">
+			<div id="photo">
+			</div>
+		</div>
+		
+		<div id="submit">
+			<input type="submit" value="SAVE RECIPE">
+		</div>
+	</form>
+</body>
+</html>
