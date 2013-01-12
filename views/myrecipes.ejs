@@ -24,8 +24,13 @@
 					<p>
 					Notes: <%= item.notes %>
 					<p>
-					<a href="/edit/<%= item._id %>">Edit</a>
-					<a href="/delete/<%= item._id %>">Delete</a>
+					<form method="POST" action="/edit/<%= item._id %>" >
+						<input type="hidden" value="put" name="_method" />
+						<input type="submit" name="submit" id="submit" value="Edit" />
+					</form>
+					<form method="GET" action="/delete/<%= item._id %>" >
+						<input type="submit" name="submit" id="submit" value="Delete" />
+					</form>
 				</div>
 				<p>
 			<% }) %>

@@ -110,7 +110,8 @@ MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
 	app.get('/new', ensureAuthenticated, routes.newRecipe);
 	app.post('/newaccount', accountCreator.newAccount);
 	app.put('/edit/:id',ensureAuthenticated, recipeHandler.editRecipe);
-	app.post('/delete/:id', ensureAuthenticated, recipeHandler.deleteRecipe);
+	app.get('/delete/:id', ensureAuthenticated, routes.deleteRecipe);
+	app.del('/delete/:id/confirm', ensureAuthenticated, recipeHandler.deleteRecipe);
 	app.post('/submit', ensureAuthenticated, recipeHandler.submitRecipe); 
 	app.get('/myrecipes/:username', ensureAuthenticated, recipeHandler.myRecipes);
 

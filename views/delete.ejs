@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<head>
+</head>
+<body>
+Are you sure you want to delete recipe <%= id %>?
+<form method="POST" action="/delete/<%= id %>/confirm" >
+	<input type="hidden" value="delete" name="_method" />
+	<input type="submit" name="submit" id="submit" value="Delete" />
+</form>
+<form method="GET" action="/myrecipes/<%= user  %>" >
+	<input type="submit" name="submit" id="submit" value="Cancel" />
+</form>	
+</body>

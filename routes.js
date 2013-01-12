@@ -41,9 +41,20 @@ exports.index = function(req,res) {
 }
 
 exports.newRecipe = function(req,res) {
-	res.sendfile(__dirname + '/views/new.html');
+	console.log('Routing request for new.html');
+	res.render('new', {title:'title', recipe:{}, username: req.user.username}, function (err, stuff) {
+		if (err) {
+			console.log(err);
+		}
+		console.log('Parse request for new successful.');
+		res.end(stuff);
+	});
 }
 
 exports.deleteRecipe = function (req, res) {
-	res.sendfile(__dirname + '/views/delete.html')
+	res.render('delete', {title: 'Confirm?', id: req.params.id, user: req.user.username}, function(err,stuff) {
+		if (!err) {
+			res.end(stuff);
+		}
+	});
 }
