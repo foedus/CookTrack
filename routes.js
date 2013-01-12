@@ -9,7 +9,8 @@ exports.http = function (req, res) {
 exports.login = function(req, res, next) {
 	MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
 		var users = db.collection('users');
-		users.findOne({'username':req.body.username}, function (err,user) {
+		var username = req.body.username.toLowerCase();
+		users.findOne({'username':username}, function (err,user) {
 			if (!user) {
 				console.log('User does not exist.');
 				return res.redirect('/');
@@ -20,7 +21,7 @@ exports.login = function(req, res, next) {
 				if (test) {
 					req.logIn(user, function (err) {
 						if (err) { return next(err); }
-						return res.redirect('/myrecipes');
+						return res.redirect('/myrecipes/'+username);
 					});
 				} else {
 					return res.redirect('/');
@@ -41,4 +42,8 @@ exports.index = function(req,res) {
 
 exports.newRecipe = function(req,res) {
 	res.sendfile(__dirname + '/views/new.html');
+}
+
+exports.deleteRecipe = function (req, res) {
+	res.sendfile(__dirname + '/views/delete.html')
 }

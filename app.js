@@ -82,6 +82,7 @@ MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
 	
 	passport.use(new LocalStrategy(
 		function(username, password, done) {
+			username = username.toLowerCase();
 			users.findOne({'username':username}, function(err,user) {
 				if (err) { 
 					console.log(err);
@@ -109,9 +110,9 @@ MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
 	app.get('/new', ensureAuthenticated, routes.newRecipe);
 	app.post('/newaccount', accountCreator.newAccount);
 	app.put('/edit',ensureAuthenticated, recipeHandler.editRecipe);
-	app.post('delete', ensureAuthenticated, recipeHandler.deleteRecipe);
+	app.post('/delete', ensureAuthenticated, recipeHandler.deleteRecipe);
 	app.post('/submit', ensureAuthenticated, recipeHandler.submitRecipe); 
-	app.get('/myrecipes', ensureAuthenticated, recipeHandler.myRecipes);
+	app.get('/myrecipes/:username', ensureAuthenticated, recipeHandler.myRecipes);
 
 // -----Run server-----
 	http.listen(8080, function() {

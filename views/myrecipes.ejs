@@ -17,7 +17,7 @@
 	<div id="showrecipes">
 		<% if (lgth>0) {%>
 			<% myrecipes.forEach(function(item) { %>
-				<div id="recipe">
+				<div class="recipe" id="<%= item._id %>">
 					Date: <%= item.date %>
 					<p>
 					Name: <%= item.dishname %>
@@ -26,8 +26,8 @@
 					<p>
 					Notes: <%= item.notes %>
 					<p>
-					<a href="/edit">Edit</a>
-					<a href="/delete">Delete</a>
+					<a href="/edit/<%= item._id %>">Edit</a>
+					<a href="/delete/<%= item._id %>">Delete</a>
 				</div>
 				<p>
 			<% }) %>
