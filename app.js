@@ -18,6 +18,7 @@ var fs = require('fs');
 // Library modules
 var accountCreator = require('./lib/accountCreator');
 var recipeHandler = require('./lib/recipeHandler');
+var photoHandler = require('./lib/photoHandler');
 var routes = require('./routes');
 
 // Authentication user search
@@ -59,12 +60,17 @@ app.configure(function() {
 	app.use(express.static(__dirname + '/public'));
 	// app.use(express.logger());
 	app.use(express.cookieParser());
-	app.use(express.bodyParser());
+	app.use(express.limit('1mb'));
+	app.use(express.bodyParser({
+	      uploadDir: __dirname + '/tmp',
+	      keepExtensions: true
+	    }));
 	app.use(express.methodOverride());
 	app.use(express.session({ secret: 'qWeRty,d0g' }));
 	app.use(passport.initialize());
 	app.use(passport.session());
 	app.use(app.router);
+
 });
 
 // -----Authentication configuration-----
@@ -117,6 +123,7 @@ app.get('/delete/:id', ensureAuthenticated, routes.deleteRecipe);
 app.del('/delete/:id/confirm', ensureAuthenticated, recipeHandler.deleteRecipe);
 app.post('/submit', ensureAuthenticated, recipeHandler.submitRecipe); 
 app.get('/myrecipes/:username', ensureAuthenticated, recipeHandler.myRecipes);
+app.post('/upload/photo', ensureAuthenticated, photoHandler.photoUpload);
 
 // -----Run server-----
 http.listen(8080, function() {

@@ -24,6 +24,9 @@
 					<p>
 					Notes: <%= item.notes %>
 					<p>
+					<form method="GET" action="/email>" >
+						<input type="submit" id="submit" value="Email" />
+					</form>
 					<form method="POST" action="/edit/<%= item._id %>" >
 						<input type="hidden" value="put" name="_method" />
 						<input type="submit" id="submit" value="Edit" />

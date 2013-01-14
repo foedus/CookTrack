@@ -2,9 +2,14 @@
 
 <html lang="en">
 <head>
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/style.css">
-<title><%= title %></title>
+	<% if (photo) { %>
+		<% var photo = photo; %>
+	<% } else { %>
+		<% var photo = ''%>
+	<% } %>
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<title><%= title %></title>
 </head>
 
 <body>
@@ -13,7 +18,7 @@
 		<a href="/logout">Logout</a>
 	</div>
 	
-	<form name="newrecipe" action="/submit" method="POST">	
+	<form name="newrecipe" action="/submit" method="POST" autocomplete="off">	
 		<div id="dishname">
 			DISH: <input type="text" name="dishname" placeholder="Name your dish." required/>	
 		</div>
@@ -35,18 +40,22 @@
 				<textarea name="notes" placeholder="What did you change? How did it taste?"></textarea>
 			</div>
 		</div>
-
-		<div id="photoholder">
-			PHOTO:
-			<input id="fileupload" type="file" method="POST">
-			<input id="filesubmit" type="submit" value="SUBMIT">
-			<div id="photo">
-			</div>
-		</div>
 		
 		<div id="submit">
 			<input type="submit" value="SAVE RECIPE">
 		</div>
+
 	</form>
+	<div id="photoholder">	
+		<form method="POST" action="/upload/photo" enctype="multipart/form-data">
+			PHOTO: <input id="photoupload" type="file" name="file" method="POST" >
+			<input id="photosubmit" type="submit" value="Upload">
+		</form>
+		<div id="photo">
+			<img src="<%= photo %>">
+		</div>
+	</div>
+
+
 </body>
 </html>

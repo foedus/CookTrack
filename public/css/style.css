@@ -92,11 +92,11 @@ body {
 	background-color: white;
 }
 
-#fileupload {
+#photoupload {
 	width: 400px;
 }
 
-#filesubmit {
+#photosubmit {
 	color: white;
 	background-color: #333;
 	width: 89px;

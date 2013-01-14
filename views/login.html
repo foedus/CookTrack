@@ -11,10 +11,10 @@
 	Please log in or create an account.
 	<div id="newuser">
 		New users
-		<form method="POST" action="/newaccount">
-			Username: <input type="username" name="username"><br>
-			Password: <input type="password" name="password"><br>
-			Email: <input type="text" name="email"><br>
+		<form method="POST" action="/newaccount" autocomplete="off">
+			Username: <input type="username" name="username"><br />
+			Password: <input type="password" name="password"><br />
+			Email: <input type="text" name="email"><br />
 			<input type="submit" value="Sign Up">
 		</form>
 	</div>
@@ -22,8 +22,8 @@
 	<div id="olduser">
 		Returning users
 		<form method="POST" action="/login">
-			Username: <input type="username" name="username"><br>
-			Password: <input type="password" name="password"><br>
+			Username: <input type="username" name="username"><br />
+			Password: <input type="password" name="password"><br />
 			<input type="submit" value="Sign In">
 		</form>
 	</div>
