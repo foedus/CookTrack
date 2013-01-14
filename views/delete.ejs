@@ -2,7 +2,7 @@
 <head>
 </head>
 <body>
-Are you sure you want to delete recipe <%= id %>?
+Are you sure you want to delete <%= dishname %>?
 <form method="POST" action="/delete/<%= id %>/confirm" >
 	<input type="hidden" value="delete" name="_method" />
 	<input type="submit" id="submit" value="Delete" />

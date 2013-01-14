@@ -1,4 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 var bcrypt = require('bcrypt');
 
 exports.http = function (req, res) {
@@ -8,11 +9,15 @@ exports.http = function (req, res) {
 
 exports.login = function(req, res, next) {
 	MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
+		console.log('Hello from the login route!');
 		var users = db.collection('users');
 		var username = req.body.username.toLowerCase();
+		console.log(req.logIn);
 		users.findOne({'username':username}, function (err,user) {
 			if (!user) {
 				console.log('User does not exist.');
+				db.close()
+				console.log('DB connection in login Closed.');
 				return res.redirect('/');
 			}
 			var password = req.body.password;
@@ -21,6 +26,8 @@ exports.login = function(req, res, next) {
 				if (test) {
 					req.logIn(user, function (err) {
 						if (err) { return next(err); }
+						db.close()
+						console.log('DB connection in login Closed.');
 						return res.redirect('/myrecipes/'+username);
 					});
 				} else {
@@ -41,9 +48,19 @@ exports.index = function(req,res) {
 }
 
 exports.deleteRecipe = function (req, res) {
-	res.render('delete', {title: 'Confirm?', id: req.params.id, user: req.user.username}, function(err,stuff) {
-		if (!err) {
-			res.end(stuff);
-		}
+	var id = req.params.id;
+	
+	
+	MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
+		var recipes = db.collection('recipes');
+		recipes.findOne({'_id':new ObjectID(id)}, function(err, doc) {
+			res.render('delete', {title: 'Confirm?', id: id, dishname: doc.dishname, user: req.user.username}, function(err,stuff) {
+				if (!err) {
+					res.end(stuff);
+				}
+				db.close();
+				console.log('DB connection in deleteRecipe Closed.');
+			});
+		});
 	});
 }

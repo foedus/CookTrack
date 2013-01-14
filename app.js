@@ -26,7 +26,9 @@ function findById(id, fn) {
 		var users = db.collection('users');
 		if(!err) {
 			var user = users.findOne({_id:new ObjectID(id)},function(err,user) {
-				if (user) {
+				db.close();
+				console.log('DB connection in findById Closed.');
+				if (user) {	
 					fn(null, user);
 				} else {
 					fn(new Error('User ' + id + ' does not exist'));
@@ -39,7 +41,7 @@ function findById(id, fn) {
 // Authentication verification
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) { return next(); }
-	res.redirect('/')
+	res.redirect('/');
 }
 
 // ------App configuration-------
@@ -55,7 +57,7 @@ app.configure(function() {
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
 	app.use(express.static(__dirname + '/public'));
-	app.use(express.logger());
+	// app.use(express.logger());
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
@@ -82,6 +84,8 @@ passport.use(new LocalStrategy(
 			var users = db.collection('users');
 			username = username.toLowerCase();
 			users.findOne({'username':username}, function(err,user) {
+				db.close();
+				console.log('DB connection in LocalStrategy Closed.');
 				if (err) { 
 					console.log(err);
 					return done(err); 
@@ -91,7 +95,7 @@ passport.use(new LocalStrategy(
 					return done(null, false, { message: 'Unknown user ' + username }); 
 				}
 		        if (user.password != password) {
-					console.log('Password error for user: ' + username); 
+					console.log('Password error for user: ' + username);
 					return done(null, false, { message: 'Invalid password' }); 
 				}
 		        console.log('Success!');
@@ -116,8 +120,8 @@ app.get('/myrecipes/:username', ensureAuthenticated, recipeHandler.myRecipes);
 
 // -----Run server-----
 http.listen(8080, function() {
-	console.log('CookTrackHTTP listening on Port 8080.')
+	console.log('CookTrackHTTP listening on Port 8080.');
 });
 https.createServer(options, app).listen(8443, function() {
-	console.log('CookTrackHTTPS listening on Port 8443.')
+	console.log('CookTrackHTTPS listening on Port 8443.');
 });
