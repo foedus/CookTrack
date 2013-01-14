@@ -2,9 +2,13 @@
 
 <html lang="en">
 <head>
+<% var dishname = recipe.dishname; %>
+<% var date = recipe.date; %>
+<% var recipetext = recipe.recipe; %>
+<% var notes = recipe.notes; %>
 <link rel="stylesheet" href="/css/normalize.css">
 <link rel="stylesheet" href="/css/style.css">
-<title><%= title %></title>
+<title>Editing "<%= dishname %>"</title>
 </head>
 
 <body>
@@ -15,24 +19,24 @@
 	
 	<form name="newrecipe" action="/submit" method="POST">	
 		<div id="dishname">
-			DISH: <input type="text" name="dishname" placeholder="Name your dish." required/>	
+			DISH: <input type="text" name="dishname" placeholder="Name your dish." value="<%= dishname || '' %>" />	
 		</div>
 
 		<div id="date">
-			DATE: <input type="date" name="date" value='<%= date %>' required/>
+			DATE: <input type="date" name="date" value="<%= date %>" />
 		</div>
 		
 		<div id="recipeholder">
 			RECIPE:
 			<div id="recipetext">
-				<textarea name="recipetext" placeholder="Enter the recipe."></textarea>
+				<textarea name="recipetext" placeholder="Enter the recipe."><% if (recipetext) { %><%= recipetext %><% } %></textarea>
 			</div>
 		</div>
 
 		<div id="notesholder">
 			NOTES: 
 			<div id="notes">
-				<textarea name="notes" placeholder="What did you change? How did it taste?"></textarea>
+				<textarea name="notes" placeholder="What did you change? How did it taste?"><% if (notes) { %><%= notes %><% } %></textarea>
 			</div>
 		</div>
 

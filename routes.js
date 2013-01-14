@@ -40,17 +40,6 @@ exports.index = function(req,res) {
 	res.sendfile(__dirname + '/views/login.html');
 }
 
-exports.newRecipe = function(req,res) {
-	console.log('Routing request for new.html');
-	res.render('new', {title:'title', recipe:{}, username: req.user.username}, function (err, stuff) {
-		if (err) {
-			console.log(err);
-		}
-		console.log('Parse request for new successful.');
-		res.end(stuff);
-	});
-}
-
 exports.deleteRecipe = function (req, res) {
 	res.render('delete', {title: 'Confirm?', id: req.params.id, user: req.user.username}, function(err,stuff) {
 		if (!err) {
