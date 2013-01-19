@@ -9,10 +9,8 @@ exports.http = function (req, res) {
 
 exports.login = function(req, res, next) {
 	MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
-		console.log('Hello from the login route!');
 		var users = db.collection('users');
 		var username = req.body.username.toLowerCase();
-		console.log(req.logIn);
 		users.findOne({'username':username}, function (err,user) {
 			if (!user) {
 				console.log('User does not exist.');

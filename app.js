@@ -58,6 +58,10 @@ app.configure(function() {
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
 	app.use(express.static(__dirname + '/public'));
+	app.use(function(req, res, next) {
+	  console.log('handling request for: ' + req.url);
+	  next();
+	});
 	// app.use(express.logger());
 	app.use(express.cookieParser());
 	app.use(express.limit('1mb'));
@@ -70,7 +74,6 @@ app.configure(function() {
 	app.use(passport.initialize());
 	app.use(passport.session());
 	app.use(app.router);
-
 });
 
 // -----Authentication configuration-----
