@@ -6,6 +6,7 @@
 
 // External modules
 var express = require('express');
+var mongoose = require('mongoose');
 var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var passport = require('passport');
@@ -20,6 +21,53 @@ var accountCreator = require('./lib/accountCreator');
 var recipeHandler = require('./lib/recipeHandler');
 var photoHandler = require('./lib/photoHandler');
 var routes = require('./routes');
+
+// Connect to db
+mongoose.connect('mongodb://localhost/CookTrackDB');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+	console.log('Mongoose connected!');
+});
+
+var recipeSchema = mongoose.Schema({
+	name: String,
+	date: Date,
+	recipe: String,
+	notes: String
+});
+
+var userSchema = mongoose.Schema({
+	username: String,
+	password: String,
+	email: String
+});
+
+var Recipe = mongoose.model('Recipe', recipeSchema);
+var User = mongoose.model('User', userSchema);
+
+// Test mongoose
+var kungpao = new Recipe({
+	name: 'Kung Pao Chicken',
+	date: 2013-01-23,
+	recipe: '1 Kung Pao Chicken',
+	notes: 'Don\'t put too much salt'
+});
+
+kungpao.save(function (err, recipe) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	console.log(recipe);
+});
+
+Recipe.find({ name: /^Kung/}, function(err, recipe) {
+	if (err) {
+		console.error(err);
+	}
+	console.log(recipe);
+});
 
 // Authentication user search
 function findById(id, fn) {
