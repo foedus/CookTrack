@@ -7,8 +7,6 @@
 // External modules
 var express = require('express');
 var mongoose = require('mongoose');
-var MongoClient = require('mongodb').MongoClient;
-var ObjectID = require('mongodb').ObjectID;
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var ejs = require('ejs');
@@ -22,6 +20,9 @@ var recipeHandler = require('./lib/recipeHandler');
 var photoHandler = require('./lib/photoHandler');
 var routes = require('./routes');
 
+// DB models
+var User = require('./models/user');
+
 // Connect to db
 mongoose.connect('mongodb://localhost/CookTrackDB');
 var db = mongoose.connection;
@@ -30,21 +31,21 @@ db.once('open', function () {
 	console.log('Mongoose connected!');
 });
 
-var recipeSchema = mongoose.Schema({
-	name: String,
-	date: {type: Date, default: Date.now},
-	recipe: String,
-	notes: String
-});
-
-var userSchema = mongoose.Schema({
-	username: String,
-	password: String,
-	email: String
-});
-
-var Recipe = mongoose.model('Recipe', recipeSchema);
-var User = mongoose.model('User', userSchema);
+// var recipeSchema = mongoose.Schema({
+// 	name: String,
+// 	date: {type: Date, default: Date.now},
+// 	recipe: String,
+// 	notes: String
+// });
+// 
+// var userSchema = mongoose.Schema({
+// 	username: String,
+// 	password: String,
+// 	email: String
+// });
+// 
+// var Recipe = mongoose.model('Recipe', recipeSchema);
+// var User = mongoose.model('User', userSchema);
 
 // Test mongoose
 // var kungpao = new Recipe({
