@@ -32,7 +32,7 @@ db.once('open', function () {
 
 var recipeSchema = mongoose.Schema({
 	name: String,
-	date: Date,
+	date: {type: Date, default: Date.now},
 	recipe: String,
 	notes: String
 });
@@ -47,43 +47,36 @@ var Recipe = mongoose.model('Recipe', recipeSchema);
 var User = mongoose.model('User', userSchema);
 
 // Test mongoose
-var kungpao = new Recipe({
-	name: 'Kung Pao Chicken',
-	date: 2013-01-23,
-	recipe: '1 Kung Pao Chicken',
-	notes: 'Don\'t put too much salt'
-});
+// var kungpao = new Recipe({
+// 	name: 'Kung Pao Chicken',
+// 	date: 2013-01-23,
+// 	recipe: '1 Kung Pao Chicken',
+// 	notes: 'Don\'t put too much salt'
+// });
 
-kungpao.save(function (err, recipe) {
-	if (err) {
-		console.error(err);
-		return;
-	}
-	console.log(recipe);
-});
-
-Recipe.find({ name: /^Kung/}, function(err, recipe) {
-	if (err) {
-		console.error(err);
-	}
-	console.log(recipe);
-});
+// kungpao.save(function (err, recipe) {
+// 	if (err) {
+// 		console.error(err);
+// 		return;
+// 	}
+// 	console.log(recipe);
+// });
+// 
+// Recipe.find({ name: /^Kung/}, function(err, recipe) {
+// 	if (err) {
+// 		console.error(err);
+// 	}
+// 	console.log(recipe);
+// });
 
 // Authentication user search
 function findById(id, fn) {
-	MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
-		var users = db.collection('users');
-		if(!err) {
-			var user = users.findOne({_id:new ObjectID(id)},function(err,user) {
-				db.close();
-				console.log('DB connection in findById Closed.');
-				if (user) {	
-					fn(null, user);
-				} else {
-					fn(new Error('User ' + id + ' does not exist'));
-				}
-			});
-		}
+	User.findOne({_id:id}, function(err, user) {
+		if (user) {
+			fn(null, user);
+		} else {
+			fn(new Error('User ' + id + ' does not exist'));
+		}		
 	});
 }	
 
@@ -126,38 +119,34 @@ app.configure(function() {
 
 // -----Authentication configuration-----
 passport.serializeUser(function(user, done) {
+	console.log('serializeUser called.');
 	done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
-  findById(id, function (err, user) {
-    done(err, user);
-  });
+	console.log('deserializeUser called.');
+	findById(id, function (err, user) {
+    	done(err, user);
+	});
 }); 
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		MongoClient.connect('mongodb://localhost:27017/CookTrackDB', function(err, db) {
-			var users = db.collection('users');
-			username = username.toLowerCase();
-			users.findOne({'username':username}, function(err,user) {
-				db.close();
-				console.log('DB connection in LocalStrategy Closed.');
-				if (err) { 
-					console.log(err);
-					return done(err); 
-				}
-		        if (!user) { 
-					console.log('Attempted login by unknown user: ' + username);
-					return done(null, false, { message: 'Unknown user ' + username }); 
-				}
-		        if (user.password != password) {
-					console.log('Password error for user: ' + username);
-					return done(null, false, { message: 'Invalid password' }); 
-				}
-		        console.log('Success!');
-				return done(null, user);
-		    });
+		User.findOne({'username':username}, function(err, user) {
+			if (err) {
+				console.error(err);
+				return done(err);
+			}
+			if (!user) {
+				console.log('Attempted login by unknown user: ' + username);
+				return done(null, false, { message: 'Unkown user ' + username });
+			}
+			if (user.password != password) {
+				console.log('Password error for user: ' +  username);
+				return done(null, false, { message: 'Invalid password' });
+			}
+			console.log('Success!');
+			return done(null, user);
 		});
 	}
 ));

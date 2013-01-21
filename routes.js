@@ -23,9 +23,11 @@ exports.login = function(req, res, next) {
 			bcrypt.compare(password,hash,function(err, test) {
 				if (test) {
 					req.logIn(user, function (err) {
-						if (err) { return next(err); }
+						if (err) { 
+							return next(err); 
+						}
 						db.close()
-						console.log('DB connection in login Closed.');
+						console.log('This DB connection in login Closed.');
 						return res.redirect('/myrecipes/'+username);
 					});
 				} else {
