@@ -2,10 +2,18 @@
 
 <html lang="en">
 <head>
+
 <% var dishname = recipe.dishname; %>
 <% var date = recipe.date; %>
 <% var recipetext = recipe.recipe; %>
 <% var notes = recipe.notes; %>
+
+<% if (photo) { %>
+	<% var photo = photo; %>
+<% } else { %>
+	<% var photo = ''%>
+<% } %>
+
 <link rel="stylesheet" href="/css/normalize.css">
 <link rel="stylesheet" href="/css/style.css">
 <title>Editing "<%= dishname %>"</title>
@@ -18,39 +26,42 @@
 	</div>
 	
 	<form name="newrecipe" action="/submit" method="POST">	
-		<div id="dishname">
-			DISH: <input type="text" name="dishname" placeholder="Name your dish." value="<%= dishname %>" />	
-		</div>
-
-		<div id="date">
-			DATE: <input type="date" name="date" value="<%= date %>" />
-		</div>
-		
-		<div id="recipeholder">
-			RECIPE:
-			<div id="recipetext">
-				<textarea name="recipetext" placeholder="Enter the recipe."><% if (recipetext) { %><%= recipetext %><% } %></textarea>
+			<div id="dishname">
+				DISH: <input type="text" name="dishname" value="<%= dishname %>" required/>	
 			</div>
-		</div>
 
-		<div id="notesholder">
-			NOTES: 
-			<div id="notes">
-				<textarea name="notes" placeholder="What did you change? How did it taste?"><% if (notes) { %><%= notes %><% } %></textarea>
+			<div id="date">
+				DATE: <input type="date" name="date" value="<%= date %>" required/>
 			</div>
-		</div>
 
-		<div id="photoholder">
-			PHOTO:
-			<input id="fileupload" type="file" method="POST">
-			<input id="filesubmit" type="submit" value="SUBMIT">
+			<div id="recipeholder">
+				RECIPE:
+				<div id="recipetext">
+					<textarea name="recipetext"><%= recipetext %>
+					</textarea>
+				</div>
+			</div>
+
+			<div id="notesholder">
+				NOTES: 
+				<div id="notes">
+					<textarea name="notes"><%= notes %>
+					</textarea>
+				</div>
+			</div>
+
+			<div id="submit">
+				<input type="submit" value="SAVE RECIPE">
+			</div>
+		</form>
+		<div id="photoholder">	
+			<form method="POST" action="/upload/photo" enctype="multipart/form-data">
+				PHOTO: <input id="photoupload" type="file" name="file" method="POST" >
+				<input id="photosubmit" type="submit" value="Upload">
+			</form>
 			<div id="photo">
+				<img src="<%= photo %>">
 			</div>
 		</div>
-		
-		<div id="submit">
-			<input type="submit" value="SAVE RECIPE">
-		</div>
-	</form>
 </body>
 </html>

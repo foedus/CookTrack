@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 
 var recipeSchema = mongoose.Schema({
-	name: String,
+	dishname: String,
 	date: {type: Date, default: Date.now},
 	recipe: String,
-	notes: String
+	notes: String,
+	username: String
 });
 
 module.exports = mongoose.model('Recipe', recipeSchema);
